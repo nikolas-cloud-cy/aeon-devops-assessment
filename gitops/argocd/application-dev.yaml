@@ -1,0 +1,20 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: api-dev
+  namespace: argocd
+spec:
+  project: aeon-api
+  source:
+    repoURL: https://git.example.com/aeon/api-gitops.git   # PLACEHOLDER
+    targetRevision: main
+    path: gitops/overlays/dev
+  destination:
+    server: https://dev-eks.example.com                    # PLACEHOLDER
+    namespace: api-dev
+  syncPolicy:
+    automated:           # dev follows main automatically
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

@@ -1,0 +1,7 @@
+.git
+gitops
+Jenkinsfile
+README.md
+**/__pycache__
+**/*.pyc
+app/test_main.py

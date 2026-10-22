@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: api-prod
+  namespace: argocd
+spec:
+  project: aeon-api
+  source:
+    repoURL: https://git.example.com/aeon/api-gitops.git   # PLACEHOLDER
+    targetRevision: main
+    path: gitops/overlays/prod
+  destination:
+    server: https://prod-eks.example.com                   # PLACEHOLDER
+    namespace: api-prod
+  # Prod syncs automatically ONLY because main is protected: the prod overlay can change
+  # solely through a reviewed, approved pull request. If the team prefers a second gate,
+  # remove `automated` and sync manually (or add a sync window).
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
+    retry:
+      limit: 3
+      backoff:
+        duration: 10s
+        factor: 2
+        maxDuration: 2m

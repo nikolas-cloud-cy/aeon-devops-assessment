@@ -1,0 +1,17 @@
+# Default-deny style policy: only ingress to the http port is allowed.
+# Egress is left open for simplicity; tighten to DNS + known dependencies in production.
+# (Enforced only if the cluster CNI supports NetworkPolicy, e.g. VPC CNI network policy or Cilium.)
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: api
+spec:
+  podSelector:
+    matchLabels:
+      app.kubernetes.io/name: api
+  policyTypes:
+    - Ingress
+  ingress:
+    - ports:
+        - port: 8080
+          protocol: TCP

@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: aeon-api
+  namespace: argocd
+spec:
+  description: api service (dev and prod)
+  sourceRepos:
+    - https://git.example.com/aeon/api-gitops.git     # PLACEHOLDER gitops repo
+  destinations:
+    - server: https://dev-eks.example.com             # PLACEHOLDER dev cluster API
+      namespace: api-dev
+    - server: https://prod-eks.example.com            # PLACEHOLDER prod cluster API
+      namespace: api-prod
+  # Only namespaced kinds this app needs; it cannot create cluster-wide resources.
+  clusterResourceWhitelist: []
+  namespaceResourceWhitelist:
+    - group: ""
+      kind: ServiceAccount
+    - group: ""
+      kind: Service
+    - group: apps
+      kind: Deployment
+    - group: networking.k8s.io
+      kind: NetworkPolicy
+    - group: policy
+      kind: PodDisruptionBudget
+    - group: external-secrets.io
+      kind: ExternalSecret
