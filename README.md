@@ -48,7 +48,7 @@ Status: unit tests pass; both overlays build and the 9 rendered resources pass `
 - The app listens on 8080 and needs no Kubernetes API access.
 
 ## Building images safely
-The pipeline uses **Kaniko** in an ephemeral pod: no Docker daemon, no privileged container,
+The pipeline uses Kaniko in an ephemeral pod: no Docker daemon, no privileged container,
 no mounted `docker.sock`. Docker-in-Docker needs privileged mode and the socket mount gives root
 on the node, so both were rejected. BuildKit rootless is a good alternative and faster with
 caching. Kaniko trade-offs: slower, and it executes build steps as root inside its own container,
@@ -94,14 +94,6 @@ whitelist of namespaced kinds.
 Real Jenkins/Kubernetes/Argo CD test run; image signing (cosign) and SBOM; Terraform for the AWS
 foundation; Ingress/ALB and TLS; HPA; egress NetworkPolicy; monitoring and alerts; Argo CD
 notifications; automatic digest pinning for the base image.
-
-## Next improvements for production
-1. Sign images with cosign and verify with an admission policy (Kyverno).
-2. Pin base images by digest with Renovate; generate and store SBOMs.
-3. Progressive delivery (Argo Rollouts canary with automatic rollback on SLO breach).
-4. Dashboards and alerts (latency, 5xx, saturation) tied to the promotion gate.
-5. Terraform/Terragrunt for EKS, ECR, IAM and Argo CD bootstrap; tested cluster rebuild runbook.
-6. Pod Security Admission `restricted`, egress policies, Argo CD SSO and RBAC.
 
 ## Time spent
 About 3 hours, over two evenings
