@@ -38,10 +38,7 @@ kustomize build gitops/overlays/prod
 kustomize build gitops/overlays/prod | kubeconform -strict -summary   # schema check
 kustomize build gitops/overlays/prod | kubectl apply --dry-run=client -f -   # needs a cluster context
 ```
-Status when written: unit tests pass; both overlays build and the 9 rendered resources pass
-`kubeconform -strict`. **The Dockerfile was not built** (no Docker daemon in my authoring
-environment); the Jenkinsfile and Argo CD manifests were not executed.
-
+Status: unit tests pass; both overlays build and the 9 rendered resources pass `kubeconform -strict`. I also built the Docker image and ran it locally in WSL (/healthz and / respond correctly). The Jenkinsfile and Argo CD manifests were not executed against real infrastructure.
 ## Assumptions
 - GitHub-style Git hosting and PR workflow; Jenkins runs on Kubernetes (pod agents).
 - Registry is ECR with **tag immutability enabled**; `registry.example.com` and all
@@ -107,4 +104,4 @@ notifications; automatic digest pinning for the base image.
 6. Pod Security Admission `restricted`, egress policies, Argo CD SSO and RBAC.
 
 ## Time spent
-**TODO (Nikolas): fill in your real time, e.g. "about 3.5 hours".** Do not submit this line unedited.
+About 3 hours, over two evenings
